@@ -18,8 +18,8 @@ Three honest, fully-offline models (scikit-learn only):
 
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.cluster import DBSCAN
+from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error
 
 SHIFTS = {
@@ -127,7 +127,7 @@ class HotspotPredictor:
 
 # =========================================================================
 class DemandForecaster:
-    LAGS = [1, 7, 14]
+    LAGS = (1, 7, 14)
 
     def __init__(self, df: pd.DataFrame):
         daily = (df.groupby(pd.to_datetime(df["DateTime"]).dt.normalize())
@@ -212,7 +212,7 @@ class ClusterDetector:
                 "cluster_id": int(lb),
                 "lat": round(float(clat), 5),
                 "lon": round(float(clon), 5),
-                "incidents_recent": int(len(sub)),
+                "incidents_recent": len(sub),
                 "incidents_previous": prev_n,
                 "growth_pct": round(float(growth), 1)
                 if np.isfinite(growth) else None,

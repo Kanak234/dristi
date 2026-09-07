@@ -8,18 +8,22 @@ fully SYNTHETIC — the pipeline works unchanged on a real FIR export
 with the same columns.
 """
 
-import numpy as np
+import folium
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-import folium
 from folium.plugins import HeatMap, MarkerCluster
 from streamlit_folium import st_folium
 
-from ml_engine import (HotspotPredictor, DemandForecaster, ClusterDetector,
-                       SHIFT_NAMES, DOW_NAMES)
-from nlq_engine import parse_query, apply_filters, EXAMPLE_QUERIES
+from ml_engine import (
+    DOW_NAMES,
+    SHIFT_NAMES,
+    ClusterDetector,
+    DemandForecaster,
+    HotspotPredictor,
+)
+from nlq_engine import EXAMPLE_QUERIES, apply_filters, parse_query
 from patrol import allocate
 
 # ---------------------------------------------------------------- theme ----
@@ -126,7 +130,7 @@ with st.sidebar:
     sel_areas = st.multiselect("Areas", sorted(df["Area"].unique()),
                                default=[])
     st.divider()
-    st.markdown(f"<span class='chip warn'>SYNTHETIC DEMO DATA</span>",
+    st.markdown("<span class='chip warn'>SYNTHETIC DEMO DATA</span>",
                 unsafe_allow_html=True)
     st.caption("Modelled on realistic Bengaluru patterns; no real FIR data. "
                "Pipeline runs unchanged on a real FIR CSV export.")

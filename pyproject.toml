@@ -1,0 +1,18 @@
+[project]
+name = "dristi"
+version = "0.1.0"
+description = "Predictive policing and crime analytics platform"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = [
+    "E741",  # Ambiguous variable name 'l' commonly used for Streamlit layout columns: l, r = st.columns()
+    "E402",  # Module-level imports not at top of file (used in test_core.py for progressive stage timing)
+    "E702",  # Multiple statements on one line (used in data generation weights)
+]

@@ -16,6 +16,7 @@ Intents:
 
 import re
 from datetime import timedelta
+
 import pandas as pd
 
 CRIME_SYNONYMS = {
@@ -38,14 +39,14 @@ CRIME_SYNONYMS = {
 }
 
 INTENT_PATTERNS = [
-    ("compare", r"\b(compare|versus|\bvs\b|rank|ranking|safest|most "
-                r"dangerous|worst|top \d+|top areas?|which areas?)\b"),
-    ("trend",   r"\b(trend|pattern|over time|monthly|weekly|seasonal|"
-                r"increase|decrease|rising|growth|by month|by hour|"
-                r"time of day)\b"),
+    ("compare", (r"\b(compare|versus|\bvs\b|rank|ranking|safest|most "
+                 r"dangerous|worst|top \d+|top areas?|which areas?)\b")),
+    ("trend",   (r"\b(trend|pattern|over time|monthly|weekly|seasonal|"
+                 r"increase|decrease|rising|growth|by month|by hour|"
+                 r"time of day)\b")),
     ("count",   r"\b(how many|count|total|number of)\b"),
-    ("map",     r"\b(hotspot|hot spot|map|where|location|show me|area[s]? "
-                r"with|concentrat)\b"),
+    ("map",     (r"\b(hotspot|hot spot|map|where|location|show me|area[s]? "
+                 r"with|concentrat)\b")),
 ]
 
 MONTHS = {m.lower(): i + 1 for i, m in enumerate(

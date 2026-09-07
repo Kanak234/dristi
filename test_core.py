@@ -1,5 +1,6 @@
 """Quick smoke tests: python test_core.py"""
 import time
+
 import pandas as pd
 
 t0 = time.time()
@@ -8,7 +9,7 @@ print(f"[data] {len(df):,} rows, {df['Area'].nunique()} areas, "
       f"{df['Crime_Type'].nunique()} crime types  ({time.time()-t0:.1f}s)")
 
 # ---- ML engine ----------------------------------------------------------
-from ml_engine import HotspotPredictor, DemandForecaster, ClusterDetector
+from ml_engine import ClusterDetector, DemandForecaster, HotspotPredictor
 
 t = time.time()
 hp = HotspotPredictor(df)
@@ -33,7 +34,7 @@ print(f"[clusters] {len(cd.clusters)} clusters, "
 print(cd.clusters.head(4).to_string(index=False))
 
 # ---- NLQ ----------------------------------------------------------------
-from nlq_engine import parse_query, apply_filters, EXAMPLE_QUERIES
+from nlq_engine import EXAMPLE_QUERIES, apply_filters, parse_query
 
 for q in EXAMPLE_QUERIES + ["upi fraud in whitefield last 2 weeks at night"]:
     p = parse_query(q, df)

@@ -14,9 +14,10 @@ on a real FIR export with the same columns.
 Run:  python generate_data.py   ->  data/crime_records.csv
 """
 
+from datetime import datetime, timedelta
+
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
 
 SEED = 42
 rng = np.random.default_rng(SEED)
