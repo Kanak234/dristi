@@ -1,13 +1,47 @@
 name: CI
-on: [push, pull_request]
+
+# Validate the existing Dristi analytics stack without suppressing real failures.
+# The workflow is read-only and uses the repository's current smoke-test contract.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: "3.12" }
-      - run: pip install pytest ruff && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - run: python -m compileall -q .
-      - run: ruff check . || true
-      - run: pytest -q || true
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      # Install the project's declared runtime dependencies plus pytest/ruff,
+      # which are validation tools and do not alter application source.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install pytest ruff
+
+      # compileall catches parser errors before the heavier smoke test runs.
+      - name: Validate Python syntax
+        run: python -m compileall -q .
+
+      # Keep lint failures visible. Suppressing them would make a green status misleading.
+      - name: Run Ruff
+        run: ruff check .
+
+      # test_core.py is the repository's existing end-to-end smoke suite.
+      - name: Run smoke tests
+        run: python test_core.py
